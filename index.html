@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2B5F7A">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Alvenaria">
+<title>Painel de Alvenaria</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+:root{--bg:#ECEBE7;--surf:#FAFAF8;--ink:#22262A;--mut:#6B7075;--line:#D3D1CA;--blk:#CFCDC5;--fill:#2B5F7A;--ok:#2E7D4F;--warn:#B7791F;--bad:#C0392B;--okbg:#DDEFE3;--warnbg:#F6E8C9;--badbg:#F5D9D5;--nobg:#E3E2DD;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171A1D;--surf:#21262A;--ink:#ECEBE7;--mut:#9AA0A5;--line:#363C41;--blk:#3A4147;--fill:#5FA3C4;--ok:#5CC38A;--warn:#E2B04F;--bad:#EC7B6D;--okbg:#1F3A2B;--warnbg:#3F3320;--badbg:#472622;--nobg:#2C3236;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171A1D;--surf:#21262A;--ink:#ECEBE7;--mut:#9AA0A5;--line:#363C41;--blk:#3A4147;--fill:#5FA3C4;--ok:#5CC38A;--warn:#E2B04F;--bad:#EC7B6D;--okbg:#1F3A2B;--warnbg:#3F3320;--badbg:#472622;--nobg:#2C3236;color-scheme:dark}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Barlow,system-ui,Arial,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,.num{font-family:"Barlow Condensed","Arial Narrow",Arial,sans-serif;letter-spacing:.2px}
+h1{font-size:30px;margin:0 0 2px;font-weight:700}
+h2{font-size:21px;margin:30px 0 10px;font-weight:700}
+.sub{color:var(--mut);margin:0 0 18px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.kpi{background:var(--surf);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.kpi .lb{color:var(--mut);font-size:13px}
+.kpi .num{font-size:40px;line-height:1.05;font-weight:700}
+.kpi .ft{font-size:13px;color:var(--mut)}
+.kpi.ok{border-left:6px solid var(--ok)}.kpi.warn{border-left:6px solid var(--warn)}.kpi.bad{border-left:6px solid var(--bad)}.kpi.no{border-left:6px solid var(--line)}
+.bld{background:var(--surf);border:1px solid var(--line);border-radius:8px;padding:12px}
+.fl{display:grid;grid-template-columns:78px 1fr 124px;gap:10px;align-items:center;padding:5px 0}
+.fl+.fl{border-top:1px dashed var(--line)}
+.fn{font-family:"Barlow Condensed",Arial,sans-serif;font-weight:700;font-size:18px}
+.wall{height:34px;border-radius:4px;position:relative;overflow:hidden;
+background:linear-gradient(var(--line) 0 0) 0 50%/100% 2px no-repeat,repeating-linear-gradient(90deg,transparent 0 31px,var(--line) 31px 33px),var(--blk)}
+.wall i{position:absolute;inset:0 auto 0 0;display:block;background:
+linear-gradient(var(--bg) 0 0) 0 50%/100% 2px no-repeat,repeating-linear-gradient(90deg,transparent 0 31px,var(--bg) 31px 33px),var(--fill);transition:width .5s}
+.wall b{position:absolute;right:8px;top:50%;transform:translateY(-50%);font:700 14px "Barlow Condensed",Arial,sans-serif;background:var(--surf);padding:1px 7px;border-radius:10px}
+.fm{font-size:13px;text-align:right}
+.chip{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:600;margin-top:2px}
+.chip.ok{background:var(--okbg);color:var(--ok)}.chip.warn{background:var(--warnbg);color:var(--warn)}.chip.bad{background:var(--badbg);color:var(--bad)}.chip.no{background:var(--nobg);color:var(--mut)}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:8px;padding:14px}
+.leg{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--mut);margin-bottom:6px}
+.leg span:before{content:"";display:inline-block;width:18px;height:3px;margin-right:6px;vertical-align:middle;background:var(--c)}
+svg{width:100%;height:auto;display:block}
+svg text{fill:var(--mut);font:11px Barlow,Arial,sans-serif}
+form{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;align-items:end}
+label{display:flex;flex-direction:column;font-size:13px;color:var(--mut);gap:3px}
+input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px;min-height:20px;width:100%;box-sizing:border-box}
+button{font:600 15px Barlow,Arial,sans-serif;border:0;border-radius:6px;padding:10px 16px;background:var(--fill);color:#fff;cursor:pointer}
+button.g{background:transparent;color:var(--mut);border:1px solid var(--line);padding:6px 10px;font-size:13px}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--warn);outline-offset:1px}
+.live{font-weight:600;font-size:14px;margin:10px 0 0;color:var(--ink)}
+.tw{overflow-x:auto;margin-top:12px}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:620px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{color:var(--mut);font-weight:500;font-size:12px}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2),td:last-child{text-align:left}
+.set{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.pv{display:grid;grid-template-columns:1fr 110px auto;gap:8px;margin-top:8px}
+.banner{background:var(--warnbg);color:var(--ink);border-radius:8px;padding:10px 14px;margin-bottom:14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.hide{display:none}
+.wrap{padding-bottom:104px}
+.view{display:none}.view.on{display:block}
+.tabs{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:980px;display:flex;background:var(--surf);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+.tabs a{flex:1;text-align:center;text-decoration:none;color:var(--mut);font-size:12px;font-weight:600;padding:4px 0;border-radius:8px}
+.tabs a span{display:block;font-size:22px;line-height:1.2}
+.tabs a[aria-current=page]{color:var(--fill)}
+.tabs a.add span{background:var(--fill);color:#fff;width:46px;height:46px;line-height:46px;border-radius:50%;margin:-20px auto 2px;font-size:28px;border:3px solid var(--surf)}
+.tabs a.add{color:var(--fill)}
+.tabs a:focus-visible{outline:3px solid var(--warn)}
+@media(max-width:520px){.fl{grid-template-columns:60px 1fr}.fm{grid-column:1/-1;text-align:left;display:flex;gap:8px;align-items:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Painel de alvenaria</h1>
+<p class="sub">Lance a produção do dia e veja o avanço de cada pavimento e a produtividade da equipe.</p>
+<div id="demo" class="banner hide"><span>Estes são dados de exemplo. Apague e comece com os da sua obra.</span><button class="g" id="clr">Apagar exemplos</button></div>
+
+<section class="view on" id="v-painel">
+<div class="kpis" id="kpis"></div>
+
+<h2>Obra por pavimento</h2>
+<div class="bld" id="bld"></div>
+
+<h2>Produtividade ao longo do tempo</h2>
+<div class="card">
+<div class="leg"><span style="--c:var(--mut)">RUP diária</span><span style="--c:var(--fill)">RUP cumulativa</span><span style="--c:var(--ok)">RUP orçada (meta)</span></div>
+<div id="chart"></div>
+<p class="sub" style="margin:6px 0 0">RUP = horas de trabalho por m². Quanto mais baixa a linha, melhor.</p>
+</div>
+
+</section>
+<section class="view" id="v-lancar">
+<h2>Lançar produção do dia</h2>
+<div class="card">
+<form id="f">
+<label>Data<input type="date" id="d" required></label>
+<label>Pavimento<select id="p"></select></label>
+<label>Pedreiros<input type="number" id="ped" min="0" step="1" value="3" required></label>
+<label>Serventes<input type="number" id="serv" min="0" step="1" value="2"></label>
+<label>Horas de cada um<input type="number" id="h" min="0" step="0.1" value="8.8" required></label>
+<label>m² executados<input type="number" id="m" min="0" step="0.1" required></label>
+<label>Ocorrência (opcional)<input type="text" id="obs" placeholder="chuva, falta de bloco..."></label>
+<button type="submit">Salvar lançamento</button>
+</form>
+<p class="live" id="live"></p>
+</div></section>
+<section class="view" id="v-hist">
+<h2>Histórico de lançamentos</h2>
+<div class="card"><div class="tw"><table><thead><tr><th>Data</th><th>Pavimento</th><th>Hh</th><th>m²</th><th>RUP</th><th>Ocorrência</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+</div>
+
+</section>
+<section class="view" id="v-ajustes">
+<h2>Configurações</h2>
+<div class="card">
+<div class="set">
+<label>RUP orçada (Hh/m²)<input type="number" id="rup" min="0.05" step="0.01"></label>
+<label>Pessoas na equipe padrão<input type="number" id="eq" min="1" step="1"></label>
+<label>Horas por dia<input type="number" id="hd" min="1" step="0.1"></label>
+</div>
+<p class="sub" style="margin:12px 0 0">Pavimentos e área prevista de alvenaria (m²)</p>
+<div id="pvs"></div>
+<p><button class="g" id="addp">Adicionar pavimento</button></p>
+</div>
+</section>
+</div>
+<nav class="tabs" id="tabs" aria-label="Navegação">
+<a href="#painel"><span>🏗</span>Painel</a>
+<a href="#lancar" class="add"><span>+</span>Lançar</a>
+<a href="#hist"><span>📋</span>Histórico</a>
+<a href="#ajustes"><span>⚙</span>Ajustes</a>
+</nav>
+<div>
+
+<script>
+var KEY="alv-painel-v1";
+function demo(){var L=[],dt=new Date(2026,10,2),i=0,seq=[["Térreo",3,2,8.8,52],["Térreo",3,2,8.8,58],["Térreo",4,2,8.8,70],["Térreo",3,2,8.8,45],["Térreo",4,2,8.8,66],["Térreo",3,2,8.8,50],["1º Pav",3,2,8.8,48],["1º Pav",3,2,8.8,55],["1º Pav",3,2,8.8,40]],obs={3:"Bloco chegou com atraso",8:"Chuva pela manhã"};
+seq.forEach(function(s,k){L.push({id:k+1,d:iso(new Date(2026,10,2+k)),p:s[0],ped:s[1],serv:s[2],h:s[3],m:s[4],obs:obs[k]||""})});
+return {rup:0.9,eq:5,hd:8,demo:true,pavs:["Térreo","1º Pav","2º Pav","3º Pav","4º Pav","5º Pav"].map(function(n){return{n:n,a:420}}),lanc:L}}
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+var S=null;
+try{var raw=localStorage.getItem(KEY);if(raw)S=JSON.parse(raw)}catch(e){}
+if(!S||!S.pavs)S=demo();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function esc(t){var x=document.createElement("div");x.textContent=t==null?"":t;return x.innerHTML}
+function f1(n){return n.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})}
+function f2(n){return n.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function st(r){if(r==null)return["no","sem dados"];var q=r/S.rup;return q<=1?["ok","no orçado"]:q<=1.1?["warn","até 10% acima"]:["bad","acima do orçado"]}
+function hh(l){return(l.ped+(l.serv||0))*l.h}
+function calc(){
+ var L=S.lanc.slice().sort(function(a,b){return a.d<b.d?-1:a.d>b.d?1:a.id-b.id}),H=0,M=0;
+ L.forEach(function(l){l.hh=hh(l);l.rup=l.m>0?l.hh/l.m:null;H+=l.hh;M+=l.m;l.cum=M>0?H/M:null});
+ var pv=S.pavs.map(function(p){var m=0,h=0;L.forEach(function(l){if(l.p===p.n){m+=l.m;h+=l.hh}});return{n:p.n,a:p.a,m:m,h:h,pc:p.a>0?m/p.a:0,r:m>0?h/m:null}});
+ var A=0,E=0;pv.forEach(function(p){A+=p.a;E+=p.m});
+ var rs=L.filter(function(l){return l.rup!=null}).map(function(l){return l.rup}).sort(function(a,b){return a-b}),pot=null;
+ if(rs.length){var pos=(rs.length-1)*.25,lo=Math.floor(pos);pot=rs[lo]+(rs[Math.min(lo+1,rs.length-1)]-rs[lo])*(pos-lo)}
+ return{L:L,pv:pv,A:A,E:E,H:H,cum:M>0?H/M:null,pot:pot}}
+function render(){
+ var c=calc(),eqd=S.eq*S.hd,saldo=c.A-c.E,rr=c.cum!=null?c.cum:S.rup,dias=eqd>0?Math.ceil(saldo*rr/eqd):0,sc=st(c.cum);
+ $("demo").className="banner"+(S.demo?"":" hide");
+ var diff=c.cum!=null?(c.cum/S.rup-1)*100:null;
+ $("kpis").innerHTML=
+  '<div class="kpi no"><div class="lb">Avanço da obra</div><div class="num">'+(c.A?f1(c.E/c.A*100):"0,0")+'%</div><div class="ft">'+f1(c.E)+' de '+f1(c.A)+' m²</div></div>'+
+  '<div class="kpi '+sc[0]+'"><div class="lb">Produtividade (RUP cumulativa)</div><div class="num">'+(c.cum!=null?f2(c.cum):"-")+'</div><div class="ft">'+(diff==null?"Sem lançamentos":"Meta "+f2(S.rup)+" · "+(diff<=0?Math.abs(diff).toFixed(0)+"% melhor que o orçado":diff.toFixed(0)+"% pior que o orçado"))+'</div></div>'+
+  '<div class="kpi no"><div class="lb">Faltam para concluir</div><div class="num">'+dias+' dias</div><div class="ft">'+f1(saldo)+' m² com a equipe de '+S.eq+' pessoas</div></div>'+
+  '<div class="kpi no"><div class="lb">Melhor ritmo da equipe</div><div class="num">'+(c.pot!=null?f2(c.pot):"-")+'</div><div class="ft">'+(c.pot!=null&&c.cum!=null?"Perda evitável: "+f1(Math.max(0,(c.cum-c.pot)*c.E))+" Hh":"RUP potencial (Hh/m²)")+'</div></div>';
+ var b="";c.pv.slice().reverse().forEach(function(p){var s=st(p.r);
+  b+='<div class="fl"><div class="fn">'+esc(p.n)+'</div><div class="wall"><i style="width:'+Math.min(100,p.pc*100)+'%"></i><b>'+Math.round(p.pc*100)+'%</b></div><div class="fm">'+f1(p.m)+' / '+f1(p.a)+' m²<br><span class="chip '+s[0]+'">'+(p.r!=null?"RUP "+f2(p.r)+" · ":"")+s[1]+'</span></div></div>'});
+ $("bld").innerHTML=b||"<p>Adicione pavimentos em Configurações.</p>";
+ chart(c);
+ var r="";c.L.slice().reverse().forEach(function(l){var s=st(l.rup);r+='<tr><td>'+l.d.split("-").reverse().join("/")+'</td><td>'+esc(l.p)+'</td><td>'+f1(l.hh)+'</td><td>'+f1(l.m)+'</td><td><span class="chip '+s[0]+'">'+(l.rup!=null?f2(l.rup):"-")+'</span></td><td>'+esc(l.obs)+'</td><td><button class="g" data-del="'+l.id+'" aria-label="Excluir lançamento">Excluir</button></td></tr>'});
+ $("rows").innerHTML=r||'<tr><td colspan="7" style="text-align:left;color:var(--mut)">Nenhum lançamento ainda. Preencha o formulário acima.</td></tr>';
+ var sel=$("p"),cur=sel.value;sel.innerHTML=S.pavs.map(function(p){return"<option>"+esc(p.n)+"</option>"}).join("");if(cur)sel.value=cur;
+ live()}
+function chart(c){
+ var P=c.L.filter(function(l){return l.rup!=null});
+ if(!P.length){$("chart").innerHTML='<p class="sub">O gráfico aparece depois do primeiro lançamento.</p>';return}
+ var W=720,Ht=230,l0=40,r0=12,t0=10,b0=28,mx=S.rup;P.forEach(function(l){mx=Math.max(mx,l.rup,l.cum)});mx*=1.15;
+ var n=P.length,X=function(i){return l0+(n>1?i*(W-l0-r0)/(n-1):(W-l0-r0)/2)},Y=function(v){return t0+(Ht-t0-b0)*(1-v/mx)},g="";
+ for(var k=0;k<=4;k++){var v=mx*k/4;g+='<line x1="'+l0+'" x2="'+(W-r0)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="var(--line)"/><text x="'+(l0-6)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+f2(v)+'</text>'}
+ var step=Math.ceil(n/8);P.forEach(function(l,i){if(i%step===0)g+='<text x="'+X(i)+'" y="'+(Ht-8)+'" text-anchor="middle">'+l.d.slice(8)+'/'+l.d.slice(5,7)+'</text>'});
+ g+='<line x1="'+l0+'" x2="'+(W-r0)+'" y1="'+Y(S.rup)+'" y2="'+Y(S.rup)+'" stroke="var(--ok)" stroke-width="2" stroke-dasharray="6 4"/>';
+ var pd=P.map(function(l,i){return(i?"L":"M")+X(i)+" "+Y(l.rup)}).join(" "),pc=P.map(function(l,i){return(i?"L":"M")+X(i)+" "+Y(l.cum)}).join(" ");
+ g+='<path d="'+pd+'" fill="none" stroke="var(--mut)" stroke-width="1.5"/>';
+ P.forEach(function(l,i){g+='<circle cx="'+X(i)+'" cy="'+Y(l.rup)+'" r="4" fill="'+(l.rup<=S.rup?"var(--ok)":"var(--bad)")+'"><title>'+l.d.split("-").reverse().join("/")+" · RUP "+f2(l.rup)+(l.obs?" · "+esc(l.obs):"")+'</title></circle>'});
+ g+='<path d="'+pc+'" fill="none" stroke="var(--fill)" stroke-width="3"/>';
+ $("chart").innerHTML='<svg viewBox="0 0 '+W+' '+Ht+'" role="img" aria-label="RUP diária e cumulativa">'+g+'</svg>'}
+function live(){var ped=+$("ped").value||0,sv=+$("serv").value||0,h=+$("h").value||0,m=+$("m").value||0,t=$("live");
+ if(m>0&&ped+sv>0&&h>0){var r=(ped+sv)*h/m,s=st(r);t.innerHTML='Este lançamento: '+f1((ped+sv)*h)+' Hh para '+f1(m)+' m² = RUP <span class="chip '+s[0]+'">'+f2(r)+' · '+s[1]+'</span>'}else t.textContent=""}
+["ped","serv","h","m"].forEach(function(i){$(i).addEventListener("input",live)});
+$("d").value=iso(new Date());
+$("f").addEventListener("submit",function(e){e.preventDefault();if(!S.pavs.length)return;
+ if(S.demo){S.demo=false;S.lanc=[]}
+ var id=S.lanc.reduce(function(a,l){return Math.max(a,l.id)},0)+1;
+ S.lanc.push({id:id,d:$("d").value,p:$("p").value,ped:+$("ped").value,serv:+$("serv").value||0,h:+$("h").value,m:+$("m").value,obs:$("obs").value.trim()});
+ $("m").value="";$("obs").value="";save();render();location.hash="painel"});
+$("rows").addEventListener("click",function(e){var id=e.target.getAttribute("data-del");if(!id)return;S.lanc=S.lanc.filter(function(l){return l.id!=id});save();render()});
+$("clr").addEventListener("click",function(){S.demo=false;S.lanc=[];save();render()});
+function cfg(){$("rup").value=S.rup;$("eq").value=S.eq;$("hd").value=S.hd;
+ $("pvs").innerHTML=S.pavs.map(function(p,i){return'<div class="pv"><input value="'+esc(p.n).replace(/"/g,"&quot;")+'" data-n="'+i+'" aria-label="Nome do pavimento"><input type="number" min="0" step="1" value="'+p.a+'" data-a="'+i+'" aria-label="Área prevista em m²"><button class="g" data-r="'+i+'">Remover</button></div>'}).join("")}
+$("rup").addEventListener("input",function(){S.rup=+this.value||S.rup;save();render()});
+$("eq").addEventListener("input",function(){S.eq=+this.value||1;save();render()});
+$("hd").addEventListener("input",function(){S.hd=+this.value||1;save();render()});
+$("pvs").addEventListener("input",function(e){var t=e.target,n=t.getAttribute("data-n"),a=t.getAttribute("data-a");
+ if(n!==null){var old=S.pavs[n].n;S.pavs[n].n=t.value;S.lanc.forEach(function(l){if(l.p===old)l.p=t.value})}
+ if(a!==null)S.pavs[a].a=+t.value||0;save();render()});
+$("pvs").addEventListener("click",function(e){var r=e.target.getAttribute("data-r");if(r===null)return;S.pavs.splice(r,1);save();cfg();render()});
+$("addp").addEventListener("click",function(){S.pavs.push({n:"Novo pavimento "+(S.pavs.length+1),a:420});save();cfg();render()});
+function go(){var h=location.hash.slice(1),ok={painel:1,lancar:1,hist:1,ajustes:1};if(!ok[h])h="painel";
+ Object.keys(ok).forEach(function(k){$("v-"+k).className="view"+(k===h?" on":"")});
+ Array.prototype.forEach.call(document.querySelectorAll("#tabs a"),function(a){if(a.getAttribute("href")==="#"+h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+ window.scrollTo(0,0)}
+window.addEventListener("hashchange",go);
+cfg();render();go();
+try{if("serviceWorker" in navigator&&location.protocol!=="file:")window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js")["catch"](function(){})})}catch(e){}
+</script>
+</body>
+</html>
